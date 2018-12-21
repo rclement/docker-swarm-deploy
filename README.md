@@ -6,10 +6,10 @@ Host node OS is assumed as Ubuntu.
 
 ## Initial setup
 
-    ```
-    pipenv install -d
-    pipenv shell
-    ```
+```
+pipenv install -d
+pipenv shell
+```
 
 ## Local development only
 
@@ -65,23 +65,23 @@ Host node OS is assumed as Ubuntu.
 
 ### Setup remote access (with TLS certificates)
 
-    ```
-    docker-machine create \
-        --driver generic \
-        --generic-ip-address=10.0.0.10 \
-        --generic-ssh-port 22 \
-        --generic-ssh-user root \
-        --generic-ssh-key ~/.ssh/id_rsa \
-        leader
-    ```
+```
+docker-machine create \
+    --driver generic \
+    --generic-ip-address=10.0.0.10 \
+    --generic-ssh-port 22 \
+    --generic-ssh-user root \
+    --generic-ssh-key ~/.ssh/id_rsa \
+    leader
+```
 
 ### Connect
 
-    ```
-    eval $(docker-machine env leader)
-    docker node ls
-    eval $(docker-machine env -u)
-    ```
+```
+eval $(docker-machine env leader)
+docker node ls
+eval $(docker-machine env -u)
+```
 
 ### Enable Docker Swarm auto-lock
 
