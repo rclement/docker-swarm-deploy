@@ -2,7 +2,16 @@
 
 Automated Docker Swarm cluster setup/provisioning/deployment using Ansible.
 
-Host node OS is assumed as Ubuntu.
+Host node OS is assumed to be Ubuntu 16.04 LTS (Xenial).
+
+At the end of the provisioning, each node will be configured with:
+- Latest Ubuntu updates
+- Non-root user access
+- SSH access restrained to non-root user and disabled password connection
+- Docker Swarm use `ufw` instead of `iptables`
+- `ufw` ports setup for generic web access (22, 80, 443) and Docker Swarm communication (2376, 2377, 7946, 4789)
+- `fail2ban` setup with sensible ban rules
+- `logwatch` setup for daily reports to provided e-mail address
 
 ## Initial setup
 
