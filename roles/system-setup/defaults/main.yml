@@ -1,0 +1,12 @@
+---
+host_hostname: "{{ inventory_hostname }}"
+host_timezone: "UTC"
+host_username: "{{ lookup('env', 'HOST_USERNAME') }}"
+host_password: "{{ lookup('env', 'HOST_PASSWORD') }}"
+host_ssh_pub_file: "{{ lookup('env', 'HOST_SSH_PUB_FILE') }}"
+host_ssh_port: 22
+host_ssh_permit_root_login: "no"
+host_ssh_password_authentication: "no"
+host_ssh_service: "ssh"
+host_admin_email: "{{ lookup('env', 'HOST_ADMIN_EMAIL') }}"
+ossec_version: "2.9.3"

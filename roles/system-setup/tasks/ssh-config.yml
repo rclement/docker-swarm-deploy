@@ -1,0 +1,14 @@
+---
+- name: Setup SSH config
+  template:
+    src: etc/ssh/sshd_config.j2
+    dest: /etc/ssh/sshd_config
+    backup: yes
+  notify:
+    - Reload SSH service
+
+- name: Service SSH enabled and running
+  service:
+    name: "{{ host_ssh_service }}"
+    enabled: true
+    state: started

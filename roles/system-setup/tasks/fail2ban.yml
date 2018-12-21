@@ -1,0 +1,25 @@
+---
+- name: Install fail2ban package
+  package:
+    name: fail2ban
+    state: present
+
+- name: Configure fail2ban
+  template:
+    src: etc/fail2ban/fail2ban.local.j2
+    dest: /etc/fail2ban/fail2ban.local
+
+- name: Configure fail2ban jail
+  template:
+    src: etc/fail2ban/jail.local.j2
+    dest: /etc/fail2ban/jail.local
+
+- name: Configure fail2ban sshd filters
+  template:
+    src: etc/fail2ban/filter.d/sshd.local.j2
+    dest: /etc/fail2ban/filter.d/sshd.local
+
+- name: Enable fail2ban service
+  service:
+    name: fail2ban
+    enabled: yes

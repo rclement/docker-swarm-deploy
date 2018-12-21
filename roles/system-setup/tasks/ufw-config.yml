@@ -1,0 +1,58 @@
+---
+# Docker with UFW tips: https://svenv.nl/unixandlinux/dockerufw/
+
+- name: Install UFW
+  package:
+    name: ufw
+    state: present
+
+- name: Enable UFW
+  ufw:
+    state: enabled
+
+- name: Enable UFW logging
+  ufw:
+    logging: on
+
+- name: Default UFW policy to deny incoming
+  ufw:
+    direction: incoming
+    policy: deny
+
+- name: Limit UFW SSH rate
+  ufw:
+    rule: allow
+    port: "{{ host_ssh_port }}"
+    proto: tcp
+
+- name: Allow UFW HTTP
+  ufw:
+    rule: allow
+    port: 80
+    proto: tcp
+
+- name: Allow UFW HTTPS
+  ufw:
+    rule: allow
+    port: 443
+    proto: tcp
+
+- name: Setup UFW DEFAULT_FORWARD_POLICY for Docker
+  template:
+    src: etc/default/ufw.j2
+    dest: /etc/default/ufw
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Setup UFW NAT for Docker
+  template:
+    src: etc/ufw/before.rules.j2
+    dest: /etc/ufw/before.rules
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Reload UFW
+  ufw:
+    state: reloaded

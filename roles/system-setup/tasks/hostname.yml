@@ -1,0 +1,10 @@
+---
+- name: Set hostname ({{ host_hostname }})
+  hostname:
+    name: "{{ host_hostname }}"
+
+- name: Modify hosts file
+  template:
+    src: etc/hosts.j2
+    dest: /etc/hosts
+    backup: yes

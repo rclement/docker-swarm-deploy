@@ -1,0 +1,3 @@
+---
+- import_playbook: host-setup.yml
+- import_playbook: swarm-up.yml

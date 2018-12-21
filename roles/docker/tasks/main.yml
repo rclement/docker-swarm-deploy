@@ -1,0 +1,67 @@
+---
+- name: uninstall old docker versions
+  apt:
+    name: ['docker', 'docker-engine', 'docker.io']
+    state: absent
+
+- name: install docker dependencies
+  apt:
+    name: ['apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common']
+    state: present
+
+- name: add docker repo apt key
+  apt_key:
+    url: 'https://download.docker.com/linux/ubuntu/gpg'
+    id: '9DC858229FC7DD38854AE2D88D81803C0EBFCD88'
+    state: present
+  register: 'add_repository_key'
+  ignore_errors: true
+
+- name: add docker repository
+  apt_repository:
+    repo: '{{ docker_apt_repository }}'
+    state: present
+    update_cache: yes
+
+- name: install docker
+  apt:
+    name: 'docker-ce={{ docker_version }}'
+    state: present
+
+- name: install python docker package
+  pip:
+    name: docker
+
+- name: setup default daemon configuration
+  template:
+    src: etc/docker/daemon.json.j2
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: 0644
+
+- name: set periodic docker system prune
+  cron:
+    name: docker-prune
+    minute: '0'
+    hour: '*/2'
+    job: 'docker container prune -f'
+
+- name: add users to docker group
+  user:
+    name: '{{ item }}'
+    groups: docker
+    append: yes
+  with_items: '{{ docker_group_members }}'
+  when: 'docker_group_members is defined'
+
+- name: enable docker systemd service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: reload docker service
+  service:
+    name: docker
+    state: reloaded

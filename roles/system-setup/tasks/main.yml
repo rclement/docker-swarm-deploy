@@ -1,0 +1,11 @@
+---
+- import_tasks: unattended-upgrades.yml
+- import_tasks: ubuntu-enable-ppa.yml
+- import_tasks: hostname.yml
+- import_tasks: timezone.yml
+- import_tasks: host-user.yml
+- import_tasks: ssh-config.yml
+- import_tasks: ufw-config.yml
+- import_tasks: sendmail.yml
+- import_tasks: fail2ban.yml
+- import_tasks: logwatch.yml

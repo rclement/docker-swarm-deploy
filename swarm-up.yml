@@ -1,0 +1,64 @@
+---
+- hosts: managers
+  become: true
+  any_errors_fatal: true
+  tasks:
+    - name: init docker swarm
+      run_once: true
+      docker_swarm:
+        advertise_addr: "{{ host_ipv4 }}"
+        state: present
+      register: docker_swarm_info
+    - name: save docker swarm token manager
+      run_once: true
+      set_fact:
+        swarm_token_manager: "{{ docker_swarm_info.swarm_facts.JoinTokens.Manager }}"
+    - name: save docker swarm token worker
+      run_once: true
+      set_fact:
+        swarm_token_worker: "{{ docker_swarm_info.swarm_facts.JoinTokens.Worker }}"
+
+- hosts: managers
+  become: true
+  any_errors_fatal: true
+  tasks:
+    - name: allow docker swarm manager node ufw ports
+      ufw:
+        rule: allow
+        port: "{{ item.port }}"
+        proto: "{{ item.proto }}"
+      with_items:
+        - { port: 2376, proto: tcp }
+        - { port: 2377, proto: tcp }
+        - { port: 7946, proto: tcp }
+        - { port: 7946, proto: udp }
+        - { port: 4789, proto: udp }
+
+    - name: add docker swarm manager node
+      docker_swarm:
+        state: join
+        advertise_addr: "{{ host_ipv4 }}"
+        join_token: "{{ hostvars[ groups['managers'][0] ].swarm_token_manager }}"
+        remote_addrs: ["{{ hostvars[ groups['managers'][0] ].host_ipv4 }}"]
+
+- hosts: workers
+  become: true
+  any_errors_fatal: true
+  tasks:
+    - name: allow docker swarm worker node ufw ports
+      ufw:
+        rule: allow
+        port: "{{ item.port }}"
+        proto: "{{ item.proto }}"
+      with_items:
+        - { port: 2376, proto: tcp }
+        - { port: 7946, proto: tcp }
+        - { port: 7946, proto: udp }
+        - { port: 4789, proto: udp }
+
+    - name: add docker swarm worker node
+      docker_swarm:
+        state: join
+        advertise_addr: "{{ host_ipv4 }}"
+        join_token: "{{ hostvars[ groups['managers'][0] ].swarm_token_worker }}"
+        remote_addrs: ["{{ hostvars[ groups['managers'][0] ].host_ipv4 }}"]

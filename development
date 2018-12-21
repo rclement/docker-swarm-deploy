@@ -1,0 +1,6 @@
+[managers]
+leader ansible_host=10.0.0.10 host_domain=leader.local host_ipv4=10.0.0.10 host_ipv6=
+manager ansible_host=10.0.0.11 host_domain=manager.local host_ipv4=10.0.0.11 host_ipv6=
+
+[workers]
+worker ansible_host=10.0.0.12 host_domain=worker.local host_ipv4=10.0.0.12 host_ipv6=

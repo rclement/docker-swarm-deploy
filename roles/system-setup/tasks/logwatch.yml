@@ -1,0 +1,15 @@
+---
+- name: Install logwatch package
+  package:
+    name: logwatch
+    state: present
+
+- name: Configure logwatch default conf
+  template:
+    src: usr/share/logwatch/default.conf/logwatch.conf.j2
+    dest: /usr/share/logwatch/default.conf/logwatch.conf
+
+- name: Configure logwatch dist conf
+  template:
+    src: usr/share/logwatch/dist.conf/logwatch.conf.j2
+    dest: /usr/share/logwatch/dist.conf/logwatch.conf

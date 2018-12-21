@@ -1,0 +1,15 @@
+---
+- name: Create host non-root user ({{ host_username }})
+  user:
+    name: "{{ host_username }}"
+    password: "{{ host_password }}"
+    system: no
+    createhome: yes
+    shell: /bin/bash
+    groups: [sudo]
+
+- name: Setup host non-root user SSH key ({{ host_username }})
+  authorized_key:
+    user: "{{ host_username }}"
+    state: present
+    key: "{{ lookup('file', host_ssh_pub_file) }}"
