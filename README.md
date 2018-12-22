@@ -2,7 +2,7 @@
 
 Automated Docker Swarm cluster setup/provisioning/deployment using Ansible.
 
-Host node OS is assumed to be Ubuntu 16.04 LTS (Xenial).
+Host node OS is assumed to be Ubuntu (tested with 16.04 LTS (Xenial) and 18.04 LTS (Bionic)).
 
 At the end of the provisioning, each node will be configured with:
 - Latest Ubuntu updates
