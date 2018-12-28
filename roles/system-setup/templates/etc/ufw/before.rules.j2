@@ -8,12 +8,6 @@
 #   ufw-before-forward
 #
 
-# Docker NAT config
-*nat
-:POSTROUTING ACCEPT [0:0]
--A POSTROUTING ! -o docker0 -s 172.17.0.0/16 -j MASQUERADE
-COMMIT
-
 # Don't delete these required lines, otherwise there will be errors
 *filter
 :ufw-before-input - [0:0]

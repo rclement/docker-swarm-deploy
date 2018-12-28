@@ -1,5 +1,6 @@
 ---
 # Docker with UFW tips: https://svenv.nl/unixandlinux/dockerufw/
+# Docker with UFW without disabling iptables: https://github.com/chaifeng/ufw-docker
 
 - name: Install UFW
   package:
@@ -45,10 +46,18 @@
     group: root
     mode: 0644
 
-- name: Setup UFW NAT for Docker
+- name: Setup UFW before.rules
   template:
     src: etc/ufw/before.rules.j2
     dest: /etc/ufw/before.rules
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Setup UFW after.rules
+  template:
+    src: etc/ufw/after.rules.j2
+    dest: /etc/ufw/after.rules
     owner: root
     group: root
     mode: 0644
